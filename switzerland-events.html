@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events for Career in Switzerland</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #03030a;
+  --border: rgba(255,255,255,0.08);
+  --text: #e8eaf0;
+  --muted: #5a5a78;
+  --white: #f0f2f8;
+  --accent: #7eb8d4;
+  --accent-dim: rgba(126,184,212,0.14);
+  --gold: #b89a6a;
+  --gold-dim: rgba(184,154,106,0.15);
+  --green: #5aaa88;
+  --violet: #8878b8;
+  --violet-dim: rgba(136,120,184,0.14);
+  --red: #a84848;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden;}
+#alpineCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+.scene-overlay{position:fixed;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom,rgba(3,3,10,0.08) 0%,rgba(3,3,10,0) 12%,rgba(3,3,10,0) 34%,rgba(3,3,10,0.38) 52%,rgba(3,3,10,0.82) 68%,rgba(3,3,10,0.97) 80%,rgba(3,3,10,1) 100%);}
+.scene-overlay::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 120% 100% at 50% 50%,transparent 55%,rgba(3,3,10,0.5) 100%);}
+.wrapper{position:relative;z-index:2;}
+.hero{min-height:58vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3rem 3rem;}
+.hero-title{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:clamp(2.2rem,5.5vw,5rem);line-height:1;letter-spacing:-0.03em;color:#f2f4f8;text-shadow:0 2px 40px rgba(0,0,0,0.8);animation:riseIn 1s ease both;}
+.hero-title span{display:block;font-weight:300;color:rgba(220,228,240,0.72);font-size:0.52em;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.35em;font-family:'DM Sans','Helvetica Neue',sans-serif;}
+.hero-sub{margin-top:1rem;font-size:0.78rem;color:rgba(160,168,188,0.85);letter-spacing:0.04em;max-width:520px;line-height:1.8;font-weight:300;animation:riseIn 1s 0.15s ease both;}
+@keyframes riseIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.navbar{position:sticky;top:0;z-index:100;background:rgba(3,3,10,0.9);backdrop-filter:blur(28px) saturate(1.6);-webkit-backdrop-filter:blur(28px) saturate(1.6);border-bottom:1px solid var(--border);padding:0.8rem 3rem;display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;}
+.filter-label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-right:0.3rem;}
+.filter-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.26rem 0.78rem;font-family:'DM Sans','Helvetica Neue',sans-serif;font-size:0.68rem;font-weight:400;letter-spacing:0.03em;cursor:pointer;transition:all 0.16s;border-radius:2px;}
+.filter-btn:hover{border-color:var(--accent);color:var(--accent);}
+.filter-btn.active{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:0.75rem;}
+.last-upd{font-size:0.6rem;color:var(--muted);text-align:right;line-height:1.5;}
+.last-upd span{color:var(--green);}
+.refresh-btn{background:transparent;border:1px solid rgba(126,184,212,0.4);color:var(--accent);padding:0.28rem 0.95rem;font-family:'DM Sans','Helvetica Neue',sans-serif;font-size:0.64rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.16s;border-radius:2px;}
+.refresh-btn:hover{background:var(--accent-dim);}
+.refresh-btn:disabled{opacity:0.3;cursor:not-allowed;}
+.view-toggle{display:flex;border:1px solid var(--border);border-radius:2px;overflow:hidden;}
+.view-btn{background:transparent;border:none;border-right:1px solid var(--border);color:var(--muted);padding:0.26rem 0.58rem;font-size:0.85rem;cursor:pointer;transition:all 0.14s;line-height:1;}
+.view-btn:last-child{border-right:none;}
+.view-btn:hover{color:var(--text);background:rgba(255,255,255,0.04);}
+.view-btn.active{background:var(--accent-dim);color:var(--accent);}
+main{padding:2rem 3rem 5rem;max-width:1080px;}
+.status-bar{display:flex;align-items:center;gap:0.65rem;margin-bottom:1.2rem;font-size:0.64rem;color:var(--muted);letter-spacing:0.04em;}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+.dot.loading{background:var(--accent);animation:pulse 1s infinite;}
+.dot.done{background:var(--green);}
+.dot.error{background:var(--red);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.15;}}
+.ai-bar{display:none;align-items:center;gap:1rem;padding:0.82rem 1.2rem;background:rgba(126,184,212,0.04);border:1px solid rgba(126,184,212,0.18);margin-bottom:1.5rem;font-size:0.68rem;color:var(--accent);letter-spacing:0.04em;border-radius:2px;}
+.ai-bar.show{display:flex;}
+.ai-dots span{display:inline-block;width:4px;height:4px;background:var(--accent);border-radius:50%;margin:0 2px;animation:bdot 1s infinite;}
+.ai-dots span:nth-child(2){animation-delay:.2s;}
+.ai-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes bdot{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+.err-bar{display:none;padding:0.78rem 1.2rem;background:rgba(168,72,72,0.07);border:1px solid rgba(168,72,72,0.22);font-size:0.68rem;color:var(--red);margin-bottom:1.5rem;border-radius:2px;}
+.err-bar.show{display:block;}
+.stats-row{display:none;gap:0.6rem;margin-bottom:1.8rem;flex-wrap:wrap;}
+.stats-row.show{display:flex;}
+.stat{padding:0.6rem 1rem;border:1px solid var(--border);background:rgba(8,8,20,0.6);backdrop-filter:blur(8px);border-radius:2px;min-width:90px;}
+.stat strong{display:block;font-family:'Helvetica Neue',Helvetica,sans-serif;font-size:1.75rem;font-weight:700;color:var(--accent);line-height:1;margin-bottom:0.15rem;letter-spacing:-0.02em;}
+.stat span{font-size:0.56rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
+.calendar-view,.list-view{display:none;}
+.calendar-view.active,.list-view.active{display:block;}
+.month-label{font-family:'Helvetica Neue',Helvetica,sans-serif;font-size:0.7rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:rgba(148,158,180,0.7);margin:2.2rem 0 0.9rem;display:flex;align-items:center;gap:1.2rem;}
+.month-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 0%,transparent 100%);}
+.cal-row{display:grid;grid-template-columns:64px 1fr;margin-bottom:0.35rem;}
+.cal-date{padding:0.75rem 0.9rem 0.65rem 0;border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;}
+.cal-date .num{font-family:'Helvetica Neue',Helvetica,sans-serif;font-size:1.65rem;font-weight:700;color:rgba(255,255,255,0.08);line-height:1;letter-spacing:-0.02em;transition:color 0.2s;}
+.cal-row:hover .cal-date .num{color:rgba(255,255,255,0.25);}
+.cal-date .dn{font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-top:0.18rem;}
+.cal-events{padding:0.38rem 0 0.38rem 1rem;display:flex;flex-direction:column;gap:0.28rem;}
+.ev-card{position:relative;background:rgba(8,10,20,0.65);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);border-left:2px solid var(--accent);padding:0.55rem 0.85rem;cursor:pointer;transition:all 0.18s;overflow:hidden;border-radius:0 2px 2px 0;}
+.ev-card::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--accent-dim),transparent 55%);opacity:0;transition:opacity 0.18s;}
+.ev-card:hover{border-color:rgba(126,184,212,0.45);transform:translateX(3px);}
+.ev-card:hover::before{opacity:1;}
+.ev-card.career{border-left-color:var(--gold);}
+.ev-card.career::before{background:linear-gradient(90deg,var(--gold-dim),transparent 55%);}
+.ev-card.corporate{border-left-color:var(--violet);}
+.ev-card.corporate::before{background:linear-gradient(90deg,var(--violet-dim),transparent 55%);}
+.ev-card.meetup{border-left-color:var(--green);}
+.ev-card.meetup::before{background:linear-gradient(90deg,rgba(90,170,136,0.12),transparent 55%);}
+.ev-top{display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem;margin-bottom:0.22rem;position:relative;z-index:1;}
+.ev-title{font-size:0.78rem;font-weight:500;color:var(--white);line-height:1.35;letter-spacing:0.01em;}
+.ev-badge{font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.1rem 0.45rem;border:1px solid;white-space:nowrap;flex-shrink:0;border-radius:1px;font-weight:500;}
+.badge-tech{color:var(--accent);border-color:rgba(126,184,212,0.28);}
+.badge-career{color:var(--gold);border-color:rgba(184,154,106,0.28);}
+.badge-corporate{color:var(--violet);border-color:rgba(136,120,184,0.28);}
+.badge-meetup{color:var(--green);border-color:rgba(90,170,136,0.28);}
+.ev-meta{display:flex;gap:0.75rem;flex-wrap:wrap;font-size:0.59rem;color:var(--muted);position:relative;z-index:1;letter-spacing:0.02em;}
+.ev-src{font-size:0.54rem;color:rgba(90,90,120,0.45);margin-top:0.18rem;position:relative;z-index:1;}
+.list-card{background:rgba(8,10,20,0.65);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);border-left:2px solid var(--accent);padding:0.95rem 1.25rem;margin-bottom:0.4rem;cursor:pointer;transition:all 0.18s;position:relative;overflow:hidden;border-radius:0 2px 2px 0;}
+.list-card::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--accent-dim),transparent 45%);opacity:0;transition:opacity 0.18s;}
+.list-card:hover{transform:translateX(3px);border-color:rgba(126,184,212,0.4);}
+.list-card:hover::before{opacity:1;}
+.list-card.career{border-left-color:var(--gold);}
+.list-card.career::before{background:linear-gradient(90deg,var(--gold-dim),transparent 45%);}
+.list-card.corporate{border-left-color:var(--violet);}
+.list-card.corporate::before{background:linear-gradient(90deg,var(--violet-dim),transparent 45%);}
+.list-card.meetup{border-left-color:var(--green);}
+.list-card.meetup::before{background:linear-gradient(90deg,rgba(90,170,136,0.1),transparent 45%);}
+.lc-date{font-size:0.6rem;letter-spacing:0.12em;color:var(--accent);margin-bottom:0.38rem;position:relative;z-index:1;text-transform:uppercase;font-weight:500;}
+.list-card.career .lc-date{color:var(--gold);}
+.list-card.corporate .lc-date{color:var(--violet);}
+.list-card.meetup .lc-date{color:var(--green);}
+.lc-title{font-family:'Helvetica Neue',Helvetica,sans-serif;font-size:1.05rem;font-weight:500;color:var(--white);line-height:1.25;margin-bottom:0.42rem;position:relative;z-index:1;display:flex;align-items:baseline;gap:0.6rem;flex-wrap:wrap;letter-spacing:-0.01em;}
+.lc-desc{font-size:0.69rem;color:var(--muted);line-height:1.65;margin-bottom:0.6rem;position:relative;z-index:1;}
+.lc-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;position:relative;z-index:1;}
+.lc-meta{font-size:0.6rem;color:var(--muted);}
+.lc-link{font-size:0.6rem;color:var(--accent);text-decoration:none;letter-spacing:0.06em;border-bottom:1px solid rgba(126,184,212,0.25);transition:border-color 0.14s;}
+.list-card.career .lc-link{color:var(--gold);border-bottom-color:rgba(184,154,106,0.25);}
+.list-card.corporate .lc-link{color:var(--violet);border-bottom-color:rgba(136,120,184,0.25);}
+.list-card.meetup .lc-link{color:var(--green);border-bottom-color:rgba(90,170,136,0.25);}
+.lc-link:hover{border-color:currentColor;}
+.lc-src{font-size:0.54rem;color:rgba(90,90,120,0.38);margin-top:0.42rem;position:relative;z-index:1;}
+.skel{background:linear-gradient(90deg,rgba(10,10,24,0.7) 25%,rgba(255,255,255,0.03) 50%,rgba(10,10,24,0.7) 75%);background-size:200% 100%;animation:shimmer 1.8s infinite;border:1px solid var(--border);border-left:2px solid var(--border);height:72px;margin-bottom:0.38rem;border-radius:0 2px 2px 0;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.empty{text-align:center;padding:5rem 2rem;color:var(--muted);}
+.empty .ico{font-size:2.2rem;opacity:0.2;margin-bottom:1rem;}
+.empty p{font-size:0.82rem;letter-spacing:0.04em;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px;}
+@media(max-width:640px){.hero{padding:0 1.2rem 2rem;min-height:42vh;}.navbar,main{padding-left:1.2rem;padding-right:1.2rem;}.cal-row{grid-template-columns:48px 1fr;}}
+</style>
+</head>
+<body>
+
+<canvas id="alpineCanvas"></canvas>
+<div class="scene-overlay"></div>
+
+<div class="wrapper">
+  <section class="hero">
+    <div>
+      <h1 class="hero-title">
+        <span>Switzerland</span>
+        Events for Career
+      </h1>
+      <p class="hero-sub">IT, Tech &amp; Career events across Switzerland — Zurich, Basel, Bern, Geneva. Curated weekly by AI from Meetup, Eventbrite, LinkedIn &amp; company websites.</p>
+    </div>
+  </section>
+
+  <nav class="navbar">
+    <span class="filter-label">Filter</span>
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('tech',this)">IT / Tech</button>
+    <button class="filter-btn" onclick="setFilter('career',this)">Career</button>
+    <button class="filter-btn" onclick="setFilter('corporate',this)">Corporate</button>
+    <button class="filter-btn" onclick="setFilter('meetup',this)">Meetup</button>
+    <div class="nav-right">
+      <div class="last-upd">Updated<br><span id="lastUpd">—</span></div>
+      <button class="refresh-btn" id="refreshBtn" onclick="loadEvents(true)">↺ Refresh</button>
+      <div class="view-toggle">
+        <button class="view-btn active" id="calBtn" onclick="setView('calendar')" title="Calendar">▦</button>
+        <button class="view-btn" id="listBtn" onclick="setView('list')" title="List">≡</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="status-bar">
+      <div class="dot" id="dot"></div>
+      <span id="statusTxt">Ready</span>
+    </div>
+    <div class="ai-bar" id="aiBar">
+      <div class="ai-dots"><span></span><span></span><span></span></div>
+      <span id="aiTxt">AI is searching for events across Switzerland…</span>
+    </div>
+    <div class="err-bar" id="errBar"></div>
+    <div class="stats-row" id="statsRow">
+      <div class="stat"><strong id="sAll">0</strong><span>Total</span></div>
+      <div class="stat"><strong id="sTech">0</strong><span>IT / Tech</span></div>
+      <div class="stat"><strong id="sCareer">0</strong><span>Career</span></div>
+      <div class="stat"><strong id="sCorp">0</strong><span>Corporate</span></div>
+    </div>
+    <div class="calendar-view active" id="calView"></div>
+    <div class="list-view" id="lstView"></div>
+  </main>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// CANVAS: Photorealistic Night Alps
+// ═══════════════════════════════════════
+(function(){
+  var canvas = document.getElementById('alpineCanvas');
+  function draw(){
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    var W = canvas.width, H = canvas.height;
+    var ctx = canvas.getContext('2d');
+
+    // SKY
+    var sky = ctx.createLinearGradient(0,0,0,H*0.75);
+    sky.addColorStop(0.00,'#01010a');
+    sky.addColorStop(0.20,'#030312');
+    sky.addColorStop(0.50,'#06091c');
+    sky.addColorStop(0.80,'#090c20');
+    sky.addColorStop(1.00,'#0d1022');
+    ctx.fillStyle = sky;
+    ctx.fillRect(0,0,W,H);
+
+    // MOON GLOW
+    var mX=W*0.72, mY=H*0.10;
+    var mg = ctx.createRadialGradient(mX,mY,0,mX,mY,W*0.32);
+    mg.addColorStop(0.00,'rgba(180,210,240,0.18)');
+    mg.addColorStop(0.35,'rgba(120,160,220,0.07)');
+    mg.addColorStop(0.70,'rgba(60,80,160,0.03)');
+    mg.addColorStop(1.00,'rgba(0,0,0,0)');
+    ctx.fillStyle=mg; ctx.fillRect(0,0,W,H);
+
+    // MOON
+    var mr = W*0.018;
+    var moon = ctx.createRadialGradient(mX-mr*0.25,mY-mr*0.2,0,mX,mY,mr);
+    moon.addColorStop(0,'#e8f2ff');
+    moon.addColorStop(0.5,'#d0e4fa');
+    moon.addColorStop(1,'#b8cced');
+    ctx.beginPath(); ctx.arc(mX,mY,mr,0,Math.PI*2);
+    ctx.fillStyle=moon; ctx.fill();
+    // crescent shadow
+    ctx.beginPath(); ctx.arc(mX+mr*0.38,mY-mr*0.22,mr*0.88,0,Math.PI*2);
+    ctx.fillStyle='#030312'; ctx.fill();
+
+    // STARS
+    var stars=[
+      [0.04,0.04,1.1,0.9],[0.08,0.09,0.7,0.7],[0.12,0.03,1.0,0.85],[0.17,0.07,0.8,0.75],
+      [0.21,0.02,0.9,0.9],[0.25,0.11,0.6,0.6],[0.30,0.05,1.0,0.85],[0.34,0.09,0.7,0.65],
+      [0.38,0.02,0.85,0.8],[0.43,0.07,0.6,0.7],[0.48,0.13,0.9,0.85],[0.52,0.04,0.7,0.6],
+      [0.57,0.08,1.0,0.9],[0.62,0.03,0.8,0.75],[0.66,0.12,0.6,0.6],[0.80,0.05,0.9,0.85],
+      [0.84,0.09,0.7,0.7],[0.88,0.03,1.0,0.9],[0.92,0.07,0.75,0.7],[0.96,0.04,0.85,0.8],
+      [0.06,0.15,0.7,0.6],[0.14,0.18,0.8,0.7],[0.22,0.16,0.6,0.55],[0.32,0.19,0.75,0.65],
+      [0.41,0.17,0.65,0.6],[0.50,0.20,0.7,0.65],[0.60,0.16,0.8,0.7],[0.68,0.19,0.6,0.55],
+      [0.76,0.15,0.75,0.7],[0.85,0.18,0.7,0.6],[0.94,0.16,0.8,0.7],[0.10,0.25,0.65,0.6],
+      [0.28,0.26,0.7,0.65],[0.46,0.25,0.65,0.6],[0.64,0.27,0.7,0.62],[0.82,0.25,0.65,0.6]
+    ];
+    stars.forEach(function(s){
+      ctx.beginPath(); ctx.arc(s[0]*W,s[1]*H,s[2],0,Math.PI*2);
+      ctx.fillStyle='rgba(200,220,255,'+s[3]+')'; ctx.fill();
+    });
+    // bright stars with glow
+    [[0.13,0.06,1.3],[0.36,0.04,1.2],[0.53,0.08,1.4],[0.77,0.03,1.2],[0.90,0.06,1.3]].forEach(function(s){
+      var sg=ctx.createRadialGradient(s[0]*W,s[1]*H,0,s[0]*W,s[1]*H,s[2]*3);
+      sg.addColorStop(0,'rgba(230,242,255,0.9)'); sg.addColorStop(1,'rgba(180,210,255,0)');
+      ctx.beginPath(); ctx.arc(s[0]*W,s[1]*H,s[2]*3,0,Math.PI*2);
+      ctx.fillStyle=sg; ctx.fill();
+      ctx.beginPath(); ctx.arc(s[0]*W,s[1]*H,s[2]*0.7,0,Math.PI*2);
+      ctx.fillStyle='rgba(240,248,255,0.98)'; ctx.fill();
+    });
+
+    // MILKY WAY
+    var mw=ctx.createLinearGradient(W*0.1,0,W*0.6,H*0.28);
+    mw.addColorStop(0,'rgba(80,100,180,0)');
+    mw.addColorStop(0.5,'rgba(100,130,220,0.08)');
+    mw.addColorStop(1,'rgba(80,100,180,0)');
+    ctx.fillStyle=mw; ctx.fillRect(0,0,W,H*0.32);
+
+    // helpers
+    function px(f){return f*W;}
+    function py(f){return f*H;}
+
+    function rockFace(pts,c0,c1){
+      ctx.beginPath();
+      pts.forEach(function(p,i){i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]);});
+      ctx.closePath();
+      var minX=pts.reduce(function(a,p){return Math.min(a,p[0]);},9e9);
+      var maxX=pts.reduce(function(a,p){return Math.max(a,p[0]);},-9e9);
+      var minY=pts.reduce(function(a,p){return Math.min(a,p[1]);},9e9);
+      var maxY=pts.reduce(function(a,p){return Math.max(a,p[1]);},-9e9);
+      var g=ctx.createLinearGradient(minX,minY,maxX,maxY);
+      g.addColorStop(0,c0); g.addColorStop(1,c1);
+      ctx.fillStyle=g; ctx.fill();
+    }
+
+    function snowField(pts,alpha){
+      if(alpha===undefined)alpha=0.88;
+      ctx.beginPath();
+      pts.forEach(function(p,i){i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]);});
+      ctx.closePath();
+      var minX=pts.reduce(function(a,p){return Math.min(a,p[0]);},9e9);
+      var maxX=pts.reduce(function(a,p){return Math.max(a,p[0]);},-9e9);
+      var minY=pts.reduce(function(a,p){return Math.min(a,p[1]);},9e9);
+      var maxY=pts.reduce(function(a,p){return Math.max(a,p[1]);},-9e9);
+      var g=ctx.createLinearGradient(minX,minY,maxX,maxY);
+      g.addColorStop(0.0,'rgba(240,248,255,'+alpha+')');
+      g.addColorStop(0.3,'rgba(220,236,252,'+alpha+')');
+      g.addColorStop(0.6,'rgba(185,210,240,'+(alpha*0.9)+')');
+      g.addColorStop(1.0,'rgba(120,160,210,'+(alpha*0.5)+')');
+      ctx.fillStyle=g; ctx.fill();
+    }
+
+    function snowStreak(x1,y1,x2,y2,w,a){
+      ctx.save();
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
+      ctx.strokeStyle='rgba(220,238,255,'+a+')';
+      ctx.lineWidth=w; ctx.lineCap='round'; ctx.stroke();
+      ctx.restore();
+    }
+
+    function shadowFace(pts,alpha){
+      ctx.beginPath();
+      pts.forEach(function(p,i){i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]);});
+      ctx.closePath();
+      ctx.fillStyle='rgba(5,5,14,'+alpha+')'; ctx.fill();
+    }
+
+
+    // ═══════════════════════════════════════════════════════════════
+    // BERNER OBERLAND — Accurate Eiger / Mönch / Jungfrau profile
+    // Based on real panorama seen from Interlaken / Grindelwald valley
+    //
+    // Layout (left→right):  Wetterhorn | Schreckhorn | EIGER | saddle
+    //                        | MÖNCH | saddle | JUNGFRAU | Silberhorn
+    //
+    // Key proportions from real photos:
+    //  - Eiger: steep diagonal left ridge, jagged dark north face
+    //  - Mönch: slender symmetric peak, slightly lower than Eiger
+    //  - Jungfrau: widest, most snow, broad glacier shoulder right side
+    //  - Jungfrau is tallest (4158m) > Mönch (4107m) > Eiger (3967m)
+    // ═══════════════════════════════════════════════════════════════
+
+    // ── LAYER 1: Far distant background ranges (very blurred) ──────
+    ctx.save();
+    ctx.filter = 'blur(8px)';
+    ctx.fillStyle = '#0c0e26';
+    ctx.beginPath();
+    ctx.moveTo(0, py(0.60));
+    // gentle far ridge across whole width
+    [[0.0,0.52],[0.05,0.49],[0.10,0.51],[0.15,0.47],[0.20,0.50],
+     [0.25,0.46],[0.30,0.48],[0.35,0.44],[0.40,0.47],[0.45,0.43],
+     [0.50,0.46],[0.55,0.42],[0.60,0.45],[0.65,0.41],[0.70,0.44],
+     [0.75,0.40],[0.80,0.43],[0.85,0.39],[0.90,0.42],[0.95,0.40],[1.0,0.43]]
+    .forEach(function(p){ctx.lineTo(p[0]*W, p[1]*H);});
+    ctx.lineTo(W, py(0.62)); ctx.lineTo(0, py(0.62));
+    ctx.closePath(); ctx.fill();
+    ctx.restore();
+
+    // ── LAYER 2: Mid background ridge (slightly blurred) ───────────
+    ctx.save();
+    ctx.filter = 'blur(3px)';
+    var ridG = ctx.createLinearGradient(0, py(0.32), 0, py(0.66));
+    ridG.addColorStop(0, '#13152a'); ridG.addColorStop(1, '#08091a');
+    ctx.fillStyle = ridG;
+    ctx.beginPath();
+    ctx.moveTo(0, py(0.66));
+    [[0.0,0.54],[0.04,0.51],[0.08,0.53],[0.12,0.50],[0.16,0.52],
+     [0.20,0.48],[0.24,0.51],[0.28,0.47],[0.32,0.50],[0.36,0.46],
+     [0.40,0.49],[0.44,0.45],[0.48,0.48],[0.52,0.44],[0.56,0.47],
+     [0.60,0.43],[0.64,0.46],[0.68,0.42],[0.72,0.45],[0.76,0.41],
+     [0.80,0.44],[0.84,0.41],[0.88,0.44],[0.92,0.42],[0.96,0.45],[1.0,0.43]]
+    .forEach(function(p){ctx.lineTo(p[0]*W, p[1]*H);});
+    ctx.lineTo(W, py(0.68)); ctx.lineTo(0, py(0.68));
+    ctx.closePath(); ctx.fill();
+    ctx.restore();
+
+    // ═══════════════════════════════════════════════════════════════
+    // WETTERHORN (far left) — rounded dome, heavy snow
+    // Real shape: broad rounded top, not very pointed
+    // ═══════════════════════════════════════════════════════════════
+    rockFace([
+      [0, py(0.72)],
+      [px(0.01), py(0.65)],
+      [px(0.03), py(0.60)],
+      [px(0.05), py(0.56)],
+      [px(0.07), py(0.52)],
+      [px(0.09), py(0.49)],
+      [px(0.105),py(0.46)],
+      [px(0.115),py(0.44)],   // left shoulder
+      [px(0.125),py(0.42)],
+      [px(0.135),py(0.40)],
+      [px(0.142),py(0.385)],  // pre-summit
+      [px(0.148),py(0.375)],
+      [px(0.152),py(0.368)],  // WETTERHORN SUMMIT — rounded
+      [px(0.156),py(0.363)],
+      [px(0.160),py(0.360)],
+      [px(0.165),py(0.358)],  // true top — broad dome
+      [px(0.170),py(0.360)],
+      [px(0.175),py(0.365)],
+      [px(0.180),py(0.372)],
+      [px(0.186),py(0.382)],
+      [px(0.192),py(0.395)],
+      [px(0.198),py(0.410)],
+      [px(0.206),py(0.430)],
+      [px(0.215),py(0.455)],
+      [px(0.225),py(0.482)],
+      [px(0.238),py(0.516)],
+      [px(0.252),py(0.552)],
+      [px(0.268),py(0.590)],
+      [px(0.285),py(0.630)],
+      [0, py(0.73)]
+    ], '#161828', '#07070f');
+
+    // Wetterhorn snow — broad dome cap
+    snowField([
+      [px(0.115),py(0.440)],
+      [px(0.125),py(0.420)],
+      [px(0.135),py(0.400)],
+      [px(0.142),py(0.385)],
+      [px(0.148),py(0.375)],
+      [px(0.152),py(0.368)],
+      [px(0.156),py(0.363)],
+      [px(0.160),py(0.360)],
+      [px(0.165),py(0.358)],
+      [px(0.170),py(0.360)],
+      [px(0.175),py(0.365)],
+      [px(0.180),py(0.372)],
+      [px(0.186),py(0.382)],
+      [px(0.192),py(0.395)],
+      [px(0.196),py(0.408)],
+      [px(0.190),py(0.400)],
+      [px(0.183),py(0.388)],
+      [px(0.176),py(0.375)],
+      [px(0.168),py(0.368)],
+      [px(0.160),py(0.366)],
+      [px(0.152),py(0.374)],
+      [px(0.145),py(0.387)],
+      [px(0.138),py(0.403)],
+      [px(0.130),py(0.422)],
+      [px(0.122),py(0.440)]
+    ], 0.90);
+    snowStreak(px(0.165),py(0.358),px(0.160),py(0.420),1.8,0.50);
+    snowStreak(px(0.160),py(0.360),px(0.153),py(0.430),1.4,0.38);
+    snowStreak(px(0.170),py(0.360),px(0.166),py(0.418),1.2,0.35);
+
+    // ═══════════════════════════════════════════════════════════════
+    // SCHRECKHORN (left of Eiger) — sharp needle, dark rocky
+    // Real shape: very pointed, thin, between Wetterhorn & Eiger
+    // ═══════════════════════════════════════════════════════════════
+    rockFace([
+      [px(0.22), py(0.72)],
+      [px(0.245),py(0.64)],
+      [px(0.265),py(0.57)],
+      [px(0.280),py(0.51)],
+      [px(0.292),py(0.46)],
+      [px(0.300),py(0.42)],
+      [px(0.306),py(0.39)],
+      [px(0.310),py(0.37)],
+      [px(0.313),py(0.355)],
+      [px(0.315),py(0.344)],  // Schreckhorn — sharp needle top
+      [px(0.317),py(0.338)],
+      [px(0.319),py(0.334)],
+      [px(0.321),py(0.336)],
+      [px(0.324),py(0.342)],
+      [px(0.327),py(0.351)],
+      [px(0.332),py(0.364)],
+      [px(0.338),py(0.380)],
+      [px(0.346),py(0.400)],
+      [px(0.356),py(0.425)],
+      [px(0.368),py(0.455)],
+      [px(0.382),py(0.490)],
+      [px(0.398),py(0.528)],
+      [px(0.415),py(0.568)],
+      [px(0.430),py(0.605)],
+      [px(0.200),py(0.73)]
+    ], '#17192c', '#07070f');
+
+    // Schreckhorn tiny snow cap
+    snowField([
+      [px(0.313),py(0.355)],
+      [px(0.315),py(0.344)],
+      [px(0.317),py(0.338)],
+      [px(0.319),py(0.334)],
+      [px(0.321),py(0.336)],
+      [px(0.324),py(0.342)],
+      [px(0.327),py(0.351)],
+      [px(0.323),py(0.348)],
+      [px(0.319),py(0.340)],
+      [px(0.315),py(0.346)],
+      [px(0.312),py(0.355)]
+    ], 0.88);
+    snowStreak(px(0.319),py(0.334),px(0.315),py(0.390),1.5,0.45);
+
+    // ═══════════════════════════════════════════════════════════════
+    // EIGER (3967m) — THE MOST DISTINCTIVE PEAK
+    // Real shape: very steep diagonal left ridge (the North Face),
+    // the famous near-vertical dark cliff, then rocky right slope.
+    // Summit has a characteristic slightly flattened top.
+    // North Face = almost vertical left side, deeply shadowed.
+    // ═══════════════════════════════════════════════════════════════
+    rockFace([
+      [px(0.38), py(0.73)],
+      [px(0.400),py(0.67)],
+      [px(0.418),py(0.61)],
+      [px(0.433),py(0.56)],
+      [px(0.445),py(0.51)],
+      [px(0.454),py(0.47)],
+      [px(0.461),py(0.44)],
+      [px(0.466),py(0.41)],  // Eiger left shoulder (Mittellegi ridge)
+      [px(0.470),py(0.385)],
+      [px(0.473),py(0.362)],
+      [px(0.475),py(0.345)],
+      [px(0.477),py(0.330)],
+      [px(0.478),py(0.318)],
+      [px(0.479),py(0.308)],
+      [px(0.480),py(0.299)],
+      [px(0.481),py(0.291)],
+      [px(0.482),py(0.284)],  // North face — steep diagonal
+      [px(0.483),py(0.278)],
+      [px(0.484),py(0.272)],
+      [px(0.485),py(0.267)],
+      [px(0.486),py(0.262)],
+      [px(0.487),py(0.257)],
+      [px(0.488),py(0.253)],
+      [px(0.489),py(0.249)],
+      [px(0.490),py(0.245)],
+      [px(0.491),py(0.242)],
+      [px(0.492),py(0.239)],
+      [px(0.493),py(0.236)],
+      [px(0.494),py(0.234)],
+      [px(0.495),py(0.232)],
+      [px(0.496),py(0.230)],  // EIGER SUMMIT — slightly flat top
+      [px(0.498),py(0.228)],
+      [px(0.500),py(0.227)],
+      [px(0.502),py(0.226)],  // true summit
+      [px(0.504),py(0.227)],
+      [px(0.506),py(0.229)],
+      [px(0.509),py(0.232)],
+      [px(0.512),py(0.236)],
+      [px(0.516),py(0.242)],
+      [px(0.520),py(0.250)],
+      [px(0.525),py(0.260)],
+      [px(0.530),py(0.272)],
+      [px(0.536),py(0.287)],
+      [px(0.543),py(0.305)],
+      [px(0.551),py(0.326)],
+      [px(0.560),py(0.350)],
+      [px(0.570),py(0.378)],
+      [px(0.582),py(0.408)],
+      [px(0.595),py(0.442)],
+      [px(0.610),py(0.478)],
+      [px(0.626),py(0.516)],
+      [px(0.643),py(0.554)],
+      [px(0.660),py(0.592)],
+      [px(0.675),py(0.625)],
+      [px(0.360),py(0.73)]
+    ], '#1a1c30', '#06060e');
+
+    // Eiger North Face shadow — the legendary dark wall
+    shadowFace([
+      [px(0.470),py(0.385)],
+      [px(0.473),py(0.362)],
+      [px(0.475),py(0.345)],
+      [px(0.477),py(0.330)],
+      [px(0.479),py(0.308)],
+      [px(0.481),py(0.291)],
+      [px(0.483),py(0.278)],
+      [px(0.485),py(0.267)],
+      [px(0.487),py(0.257)],
+      [px(0.489),py(0.249)],
+      [px(0.491),py(0.242)],
+      [px(0.493),py(0.236)],
+      [px(0.495),py(0.232)],
+      [px(0.496),py(0.230)],
+      [px(0.498),py(0.228)],
+      [px(0.500),py(0.227)],
+      [px(0.499),py(0.230)],
+      [px(0.497),py(0.234)],
+      [px(0.494),py(0.240)],
+      [px(0.491),py(0.246)],
+      [px(0.488),py(0.255)],
+      [px(0.485),py(0.265)],
+      [px(0.482),py(0.277)],
+      [px(0.479),py(0.292)],
+      [px(0.476),py(0.312)],
+      [px(0.473),py(0.338)],
+      [px(0.471),py(0.362)],
+      [px(0.469),py(0.388)]
+    ], 0.82);
+
+    // Eiger snow — summit area + upper SE face
+    snowField([
+      [px(0.488),py(0.253)],
+      [px(0.490),py(0.245)],
+      [px(0.492),py(0.239)],
+      [px(0.494),py(0.234)],
+      [px(0.496),py(0.230)],
+      [px(0.498),py(0.228)],
+      [px(0.500),py(0.227)],
+      [px(0.502),py(0.226)],
+      [px(0.504),py(0.227)],
+      [px(0.506),py(0.229)],
+      [px(0.509),py(0.232)],
+      [px(0.512),py(0.236)],
+      [px(0.516),py(0.242)],
+      [px(0.520),py(0.250)],
+      [px(0.518),py(0.248)],
+      [px(0.513),py(0.240)],
+      [px(0.508),py(0.233)],
+      [px(0.503),py(0.229)],
+      [px(0.500),py(0.229)],
+      [px(0.497),py(0.231)],
+      [px(0.494),py(0.236)],
+      [px(0.491),py(0.243)],
+      [px(0.489),py(0.252)]
+    ], 0.94);
+
+    // Snow on upper SE ridge
+    snowField([
+      [px(0.520),py(0.250)],
+      [px(0.525),py(0.260)],
+      [px(0.530),py(0.272)],
+      [px(0.536),py(0.287)],
+      [px(0.530),py(0.285)],
+      [px(0.524),py(0.270)],
+      [px(0.519),py(0.258)]
+    ], 0.72);
+
+    // Lit SE face (moonlight from right)
+    ctx.beginPath();
+    [[px(0.504),py(0.227)],[px(0.506),py(0.229)],[px(0.509),py(0.232)],
+     [px(0.512),py(0.236)],[px(0.516),py(0.242)],[px(0.520),py(0.250)],
+     [px(0.525),py(0.260)],[px(0.530),py(0.272)],[px(0.525),py(0.268)],
+     [px(0.518),py(0.254)],[px(0.512),py(0.244)],[px(0.507),py(0.236)],
+     [px(0.503),py(0.230)]]
+    .forEach(function(p,i){i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]);});
+    ctx.closePath();
+    var eigL = ctx.createLinearGradient(px(0.50),py(0.226),px(0.53),py(0.275));
+    eigL.addColorStop(0,'rgba(200,225,248,0.48)');
+    eigL.addColorStop(1,'rgba(140,175,218,0.14)');
+    ctx.fillStyle=eigL; ctx.fill();
+
+    // Eiger couloirs
+    snowStreak(px(0.502),py(0.226),px(0.496),py(0.285),2.2,0.58);
+    snowStreak(px(0.498),py(0.228),px(0.492),py(0.292),1.6,0.42);
+    snowStreak(px(0.506),py(0.229),px(0.501),py(0.290),1.4,0.38);
+
+    // ═══════════════════════════════════════════════════════════════
+    // MÖNCH (4107m) — elegant slender symmetric peak
+    // Real shape: beautiful slim cone, slightly right of Eiger.
+    // Smoother flanks than Eiger, good snow cover, slightly lower.
+    // A classic triangular alpine peak.
+    // ═══════════════════════════════════════════════════════════════
+    rockFace([
+      [px(0.600),py(0.73)],
+      [px(0.615),py(0.68)],
+      [px(0.628),py(0.63)],
+      [px(0.638),py(0.59)],
+      [px(0.646),py(0.555)],
+      [px(0.652),py(0.524)],
+      [px(0.657),py(0.497)],
+      [px(0.661),py(0.474)],
+      [px(0.664),py(0.454)],
+      [px(0.667),py(0.436)],
+      [px(0.669),py(0.420)],
+      [px(0.671),py(0.406)],
+      [px(0.673),py(0.393)],
+      [px(0.674),py(0.382)],
+      [px(0.675),py(0.372)],
+      [px(0.676),py(0.363)],
+      [px(0.677),py(0.355)],
+      [px(0.678),py(0.348)],
+      [px(0.679),py(0.342)],
+      [px(0.680),py(0.337)],
+      [px(0.681),py(0.332)],
+      [px(0.682),py(0.328)],
+      [px(0.683),py(0.324)],
+      [px(0.684),py(0.321)],
+      [px(0.685),py(0.319)],
+      [px(0.686),py(0.317)],
+      [px(0.687),py(0.315)],
+      [px(0.688),py(0.314)],  // MÖNCH SUMMIT — elegant point
+      [px(0.689),py(0.315)],
+      [px(0.690),py(0.317)],
+      [px(0.691),py(0.320)],
+      [px(0.692),py(0.324)],
+      [px(0.694),py(0.330)],
+      [px(0.696),py(0.337)],
+      [px(0.698),py(0.345)],
+      [px(0.700),py(0.355)],
+      [px(0.703),py(0.366)],
+      [px(0.706),py(0.379)],
+      [px(0.710),py(0.394)],
+      [px(0.714),py(0.412)],
+      [px(0.719),py(0.432)],
+      [px(0.725),py(0.455)],
+      [px(0.732),py(0.481)],
+      [px(0.740),py(0.510)],
+      [px(0.750),py(0.542)],
+      [px(0.762),py(0.578)],
+      [px(0.776),py(0.616)],
+      [px(0.790),py(0.652)],
+      [px(0.580),py(0.73)]
+    ], '#181a2c', '#06060e');
+
+    // Mönch snow — beautiful broad cap, symmetric
+    snowField([
+      [px(0.674),py(0.382)],
+      [px(0.675),py(0.372)],
+      [px(0.676),py(0.363)],
+      [px(0.677),py(0.355)],
+      [px(0.678),py(0.348)],
+      [px(0.679),py(0.342)],
+      [px(0.680),py(0.337)],
+      [px(0.681),py(0.332)],
+      [px(0.682),py(0.328)],
+      [px(0.683),py(0.324)],
+      [px(0.684),py(0.321)],
+      [px(0.685),py(0.319)],
+      [px(0.686),py(0.317)],
+      [px(0.687),py(0.315)],
+      [px(0.688),py(0.314)],
+      [px(0.689),py(0.315)],
+      [px(0.690),py(0.317)],
+      [px(0.691),py(0.320)],
+      [px(0.692),py(0.324)],
+      [px(0.694),py(0.330)],
+      [px(0.696),py(0.337)],
+      [px(0.698),py(0.345)],
+      [px(0.700),py(0.355)],
+      [px(0.703),py(0.366)],
+      [px(0.706),py(0.379)],
+      [px(0.707),py(0.384)],
+      [px(0.702),py(0.376)],
+      [px(0.698),py(0.362)],
+      [px(0.694),py(0.347)],
+      [px(0.691),py(0.334)],
+      [px(0.688),py(0.322)],
+      [px(0.685),py(0.326)],
+      [px(0.682),py(0.335)],
+      [px(0.679),py(0.349)],
+      [px(0.676),py(0.364)],
+      [px(0.674),py(0.379)]
+    ], 0.92);
+
+    // Mönch lit right face
+    ctx.beginPath();
+    [[px(0.689),py(0.315)],[px(0.691),py(0.320)],[px(0.694),py(0.330)],
+     [px(0.698),py(0.345)],[px(0.703),py(0.366)],[px(0.708),py(0.390)],
+     [px(0.703),py(0.384)],[px(0.697),py(0.360)],[px(0.693),py(0.340)],
+     [px(0.689),py(0.325)],[px(0.688),py(0.316)]]
+    .forEach(function(p,i){i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]);});
+    ctx.closePath();
+    var moL = ctx.createLinearGradient(px(0.688),py(0.314),px(0.710),py(0.395));
+    moL.addColorStop(0,'rgba(210,230,252,0.45)');
+    moL.addColorStop(1,'rgba(150,185,225,0.10)');
+    ctx.fillStyle=moL; ctx.fill();
+
+    shadowFace([
+      [px(0.676),py(0.363)],[px(0.675),py(0.372)],[px(0.674),py(0.382)],
+      [px(0.675),py(0.379)],[px(0.677),py(0.366)],[px(0.678),py(0.356)],
+      [px(0.677),py(0.357)]
+    ], 0.60);
+
+    snowStreak(px(0.688),py(0.314),px(0.684),py(0.380),2.0,0.55);
+    snowStreak(px(0.686),py(0.317),px(0.681),py(0.385),1.4,0.40);
+    snowStreak(px(0.690),py(0.317),px(0.686),py(0.382),1.2,0.35);
+
+    // ═══════════════════════════════════════════════════════════════
+    // JUNGFRAU (4158m) — TALLEST, most snow, queen of the Alps
+    // Real shape: broad glaciated upper body, wide snow shoulders,
+    // gentle left slope to Mönch, steeper right, Silberhorn on right.
+    // Much more snow than Eiger/Mönch — almost white upper half.
+    // ═══════════════════════════════════════════════════════════════
+    rockFace([
+      [px(0.760),py(0.73)],
+      [px(0.775),py(0.68)],
+      [px(0.788),py(0.63)],
+      [px(0.798),py(0.592)],
+      [px(0.806),py(0.558)],
+      [px(0.813),py(0.528)],
+      [px(0.819),py(0.500)],
+      [px(0.824),py(0.475)],
+      [px(0.828),py(0.453)],
+      [px(0.832),py(0.433)],
+      [px(0.835),py(0.415)],
+      [px(0.838),py(0.398)],
+      [px(0.840),py(0.383)],
+      [px(0.842),py(0.369)],
+      [px(0.843),py(0.357)],
+      [px(0.844),py(0.346)],
+      [px(0.845),py(0.336)],
+      [px(0.846),py(0.327)],
+      [px(0.847),py(0.319)],
+      [px(0.848),py(0.312)],
+      [px(0.849),py(0.305)],
+      [px(0.850),py(0.299)],
+      [px(0.851),py(0.293)],
+      [px(0.852),py(0.288)],
+      [px(0.853),py(0.283)],
+      [px(0.854),py(0.279)],
+      [px(0.855),py(0.275)],
+      [px(0.856),py(0.272)],
+      [px(0.857),py(0.269)],
+      [px(0.858),py(0.267)],
+      [px(0.859),py(0.265)],
+      [px(0.860),py(0.263)],   // Jungfrau left approach
+      [px(0.861),py(0.261)],
+      [px(0.862),py(0.259)],
+      [px(0.863),py(0.258)],
+      [px(0.864),py(0.257)],
+      [px(0.865),py(0.256)],   // near summit
+      [px(0.866),py(0.255)],
+      [px(0.867),py(0.254)],
+      [px(0.868),py(0.253)],
+      [px(0.869),py(0.252)],
+      [px(0.870),py(0.251)],
+      [px(0.871),py(0.250)],
+      [px(0.872),py(0.249)],
+      [px(0.873),py(0.248)],
+      [px(0.874),py(0.247)],
+      [px(0.875),py(0.246)],
+      [px(0.876),py(0.245)],
+      [px(0.877),py(0.244)],
+      [px(0.878),py(0.243)],
+      [px(0.879),py(0.242)],
+      [px(0.880),py(0.241)],
+      [px(0.881),py(0.241)],
+      [px(0.882),py(0.240)],
+      [px(0.883),py(0.240)],
+      [px(0.884),py(0.239)],   // JUNGFRAU TRUE SUMMIT
+      [px(0.885),py(0.239)],
+      [px(0.886),py(0.239)],
+      [px(0.887),py(0.240)],
+      [px(0.888),py(0.241)],
+      [px(0.889),py(0.242)],
+      [px(0.890),py(0.243)],
+      [px(0.891),py(0.245)],
+      [px(0.893),py(0.248)],
+      [px(0.895),py(0.252)],
+      [px(0.898),py(0.258)],
+      [px(0.901),py(0.266)],
+      [px(0.905),py(0.276)],
+      [px(0.909),py(0.288)],
+      [px(0.914),py(0.303)],
+      [px(0.919),py(0.320)],  // Silberhorn shoulder
+      [px(0.923),py(0.332)],
+      [px(0.926),py(0.340)],
+      [px(0.928),py(0.345)],
+      [px(0.930),py(0.342)],  // Silberhorn sub-peak
+      [px(0.932),py(0.338)],
+      [px(0.934),py(0.342)],
+      [px(0.936),py(0.350)],
+      [px(0.939),py(0.362)],
+      [px(0.943),py(0.378)],
+      [px(0.948),py(0.398)],
+      [px(0.954),py(0.422)],
+      [px(0.961),py(0.450)],
+      [px(0.969),py(0.482)],
+      [px(0.978),py(0.518)],
+      [px(0.988),py(0.558)],
+      [W, py(0.600)],
+      [W, py(0.73)]
+    ], '#181a2e', '#06060e');
+
+    // Jungfrau massive snow field — queen of glaciers
+    // Upper body almost entirely snow-white
+    snowField([
+      [px(0.842),py(0.369)],
+      [px(0.843),py(0.357)],
+      [px(0.844),py(0.346)],
+      [px(0.845),py(0.336)],
+      [px(0.846),py(0.327)],
+      [px(0.847),py(0.319)],
+      [px(0.848),py(0.312)],
+      [px(0.849),py(0.305)],
+      [px(0.850),py(0.299)],
+      [px(0.851),py(0.293)],
+      [px(0.852),py(0.288)],
+      [px(0.853),py(0.283)],
+      [px(0.854),py(0.279)],
+      [px(0.855),py(0.275)],
+      [px(0.856),py(0.272)],
+      [px(0.857),py(0.269)],
+      [px(0.858),py(0.267)],
+      [px(0.859),py(0.265)],
+      [px(0.860),py(0.263)],
+      [px(0.861),py(0.261)],
+      [px(0.862),py(0.259)],
+      [px(0.863),py(0.258)],
+      [px(0.864),py(0.257)],
+      [px(0.865),py(0.256)],
+      [px(0.866),py(0.255)],
+      [px(0.867),py(0.254)],
+      [px(0.868),py(0.253)],
+      [px(0.869),py(0.252)],
+      [px(0.870),py(0.251)],
+      [px(0.872),py(0.249)],
+      [px(0.874),py(0.247)],
+      [px(0.876),py(0.245)],
+      [px(0.878),py(0.243)],
+      [px(0.880),py(0.241)],
+      [px(0.882),py(0.240)],
+      [px(0.884),py(0.239)],
+      [px(0.886),py(0.239)],
+      [px(0.888),py(0.241)],
+      [px(0.890),py(0.243)],
+      [px(0.893),py(0.248)],
+      [px(0.897),py(0.255)],
+      [px(0.901),py(0.265)],
+      [px(0.906),py(0.278)],
+      [px(0.911),py(0.294)],
+      [px(0.916),py(0.312)],
+      [px(0.921),py(0.330)],
+      [px(0.926),py(0.342)],
+      [px(0.928),py(0.348)],
+      [px(0.924),py(0.345)],
+      [px(0.919),py(0.333)],
+      [px(0.913),py(0.318)],
+      [px(0.907),py(0.300)],
+      [px(0.900),py(0.280)],
+      [px(0.895),py(0.264)],
+      [px(0.890),py(0.250)],
+      [px(0.884),py(0.244)],
+      [px(0.878),py(0.248)],
+      [px(0.872),py(0.254)],
+      [px(0.866),py(0.260)],
+      [px(0.860),py(0.268)],
+      [px(0.856),py(0.277)],
+      [px(0.852),py(0.290)],
+      [px(0.848),py(0.315)],
+      [px(0.845),py(0.340)],
+      [px(0.843),py(0.360)]
+    ], 0.95);
+
+    // Silberhorn sub-peak snow
+    snowField([
+      [px(0.926),py(0.340)],
+      [px(0.928),py(0.345)],
+      [px(0.930),py(0.342)],
+      [px(0.932),py(0.338)],
+      [px(0.934),py(0.342)],
+      [px(0.932),py(0.343)],
+      [px(0.929),py(0.346)],
+      [px(0.927),py(0.343)]
+    ], 0.90);
+
+    // Jungfrau lit right face (moonlit, very bright)
+    ctx.beginPath();
+    [[px(0.886),py(0.239)],[px(0.888),py(0.241)],[px(0.890),py(0.243)],
+     [px(0.893),py(0.248)],[px(0.897),py(0.255)],[px(0.901),py(0.265)],
+     [px(0.906),py(0.278)],[px(0.911),py(0.294)],[px(0.916),py(0.312)],
+     [px(0.910),py(0.308)],[px(0.904),py(0.292)],[px(0.898),py(0.276)],
+     [px(0.893),py(0.261)],[px(0.889),py(0.249)],[px(0.885),py(0.241)]]
+    .forEach(function(p,i){i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]);});
+    ctx.closePath();
+    var jfL = ctx.createLinearGradient(px(0.885),py(0.239),px(0.918),py(0.315));
+    jfL.addColorStop(0,'rgba(215,235,255,0.55)');
+    jfL.addColorStop(0.5,'rgba(180,210,245,0.30)');
+    jfL.addColorStop(1,'rgba(140,180,230,0.10)');
+    ctx.fillStyle=jfL; ctx.fill();
+
+    // Jungfrau couloirs and glacier streaks
+    snowStreak(px(0.885),py(0.239),px(0.878),py(0.305),2.2,0.55);
+    snowStreak(px(0.882),py(0.240),px(0.874),py(0.315),1.8,0.45);
+    snowStreak(px(0.888),py(0.241),px(0.882),py(0.308),1.6,0.42);
+    snowStreak(px(0.893),py(0.248),px(0.888),py(0.315),1.4,0.35);
+    snowStreak(px(0.875),py(0.246),px(0.868),py(0.320),1.2,0.30);
+    // Left flank glacier
+    snowStreak(px(0.862),py(0.259),px(0.855),py(0.340),1.5,0.38);
+    snowStreak(px(0.858),py(0.265),px(0.851),py(0.345),1.2,0.32);
+
+    // Jungfrau peak glow (she's the tallest — more moonlight)
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    var jfG = ctx.createRadialGradient(px(0.885),py(0.239),0,px(0.885),py(0.239),W*0.06);
+    jfG.addColorStop(0,'rgba(210,235,255,0.13)');
+    jfG.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=jfG; ctx.fillRect(0,0,W,H*0.5);
+    ctx.restore();
+
+    // Eiger peak glow
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    var egG = ctx.createRadialGradient(px(0.502),py(0.226),0,px(0.502),py(0.226),W*0.04);
+    egG.addColorStop(0,'rgba(195,222,250,0.10)');
+    egG.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=egG; ctx.fillRect(0,0,W,H*0.5);
+    ctx.restore();
+
+    // Mönch peak glow
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    var moG = ctx.createRadialGradient(px(0.688),py(0.314),0,px(0.688),py(0.314),W*0.035);
+    moG.addColorStop(0,'rgba(200,228,252,0.10)');
+    moG.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=moG; ctx.fillRect(0,0,W,H*0.5);
+    ctx.restore();
+
+    // ── FOREGROUND HILLS ───────────────────────────────────────────
+    ctx.fillStyle='#04040c';
+    ctx.beginPath(); ctx.moveTo(0,H);
+    [[0,0.73],[0.05,0.69],[0.10,0.72],[0.16,0.68],[0.22,0.71],
+     [0.28,0.67],[0.35,0.70],[0.41,0.66],[0.48,0.69],[0.55,0.65],
+     [0.62,0.68],[0.69,0.64],[0.75,0.67],[0.82,0.65],[0.88,0.68],
+     [0.94,0.66],[1.0,0.69]]
+    .forEach(function(p){ctx.lineTo(p[0]*W,p[1]*H);});
+    ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
+
+    ctx.fillStyle='#020207';
+    ctx.beginPath(); ctx.moveTo(0,H);
+    [[0,0.79],[0.08,0.76],[0.17,0.78],[0.26,0.75],[0.35,0.77],
+     [0.44,0.74],[0.53,0.76],[0.62,0.73],[0.71,0.76],[0.80,0.74],
+     [0.89,0.77],[1.0,0.75]]
+    .forEach(function(p){ctx.lineTo(p[0]*W,p[1]*H);});
+    ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
+
+    // ── VILLAGE LIGHTS ─────────────────────────────────────────────
+    var lights=[
+      [0.12,0.740,2.8,0.55],[0.135,0.733,2.0,0.48],[0.150,0.742,2.4,0.52],
+      [0.165,0.736,1.8,0.42],[0.180,0.730,2.2,0.48],[0.195,0.724,1.6,0.38],
+      [0.380,0.724,2.6,0.52],[0.396,0.718,1.8,0.44],[0.412,0.726,2.0,0.48],
+      [0.428,0.720,1.6,0.40],[0.444,0.714,2.2,0.46],
+      [0.585,0.730,2.4,0.50],[0.600,0.723,1.8,0.43],[0.615,0.731,2.0,0.47],
+      [0.785,0.725,2.5,0.50],[0.800,0.719,1.8,0.43],[0.815,0.727,2.0,0.46]
+    ];
+    lights.forEach(function(l){
+      var lg=ctx.createRadialGradient(l[0]*W,l[1]*H,0,l[0]*W,l[1]*H,l[2]*4);
+      lg.addColorStop(0,'rgba(255,210,140,'+l[3]+')');
+      lg.addColorStop(0.4,'rgba(255,185,80,'+(l[3]*0.5)+')');
+      lg.addColorStop(1,'rgba(255,160,60,0)');
+      ctx.beginPath(); ctx.arc(l[0]*W,l[1]*H,l[2]*4,0,Math.PI*2);
+      ctx.fillStyle=lg; ctx.fill();
+      ctx.beginPath(); ctx.arc(l[0]*W,l[1]*H,l[2]*0.55,0,Math.PI*2);
+      ctx.fillStyle='rgba(255,230,170,'+(l[3]*1.1)+')'; ctx.fill();
+    });
+
+    // ── VALLEY HAZE ────────────────────────────────────────────────
+    var haze=ctx.createLinearGradient(0,H*0.60,0,H*0.82);
+    haze.addColorStop(0,'rgba(18,20,48,0)');
+    haze.addColorStop(0.4,'rgba(14,16,38,0.20)');
+    haze.addColorStop(1,'rgba(10,11,24,0.52)');
+    ctx.fillStyle=haze; ctx.fillRect(0,H*0.55,W,H*0.38);
+
+  }
+
+  draw();
+  window.addEventListener('resize',draw);
+})();
+
+// ═══════════════════════════════════════
+// APP LOGIC
+// ═══════════════════════════════════════
+var allEvents=[], currentFilter='all', currentView='calendar';
+var CACHE_KEY='ch_events_v5', CACHE_TTL=7*24*60*60*1000;
+var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+var DAYS=['SU','MO','TU','WE','TH','FR','SA'];
+
+function saveCache(e){try{localStorage.setItem(CACHE_KEY,JSON.stringify({events:e,ts:Date.now()}));}catch(x){}}
+function loadCache(){try{var r=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');if(!r||Date.now()-r.ts>CACHE_TTL)return null;return r;}catch(x){return null;}}
+function setStatus(s,t){document.getElementById('dot').className='dot '+s;document.getElementById('statusTxt').textContent=t;}
+function showAI(t){document.getElementById('aiBar').classList.add('show');document.getElementById('aiTxt').textContent=t;}
+function hideAI(){document.getElementById('aiBar').classList.remove('show');}
+function showErr(m){var e=document.getElementById('errBar');e.textContent='⚠ '+m;e.classList.add('show');}
+function hideErr(){document.getElementById('errBar').classList.remove('show');}
+function showSkels(){var s='';for(var i=0;i<5;i++)s+='<div class="skel"></div>';document.getElementById('calView').innerHTML=s;document.getElementById('lstView').innerHTML=s;}
+function setFilter(f,btn){currentFilter=f;document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');render();}
+function setView(v){currentView=v;document.getElementById('calView').classList.toggle('active',v==='calendar');document.getElementById('lstView').classList.toggle('active',v==='list');document.getElementById('calBtn').classList.toggle('active',v==='calendar');document.getElementById('listBtn').classList.toggle('active',v==='list');render();}
+function filtered(){return currentFilter==='all'?allEvents:allEvents.filter(function(e){return e.type===currentFilter;});}
+
+function badge(t){
+  var m={tech:['badge-tech','IT/Tech'],career:['badge-career','Career'],corporate:['badge-corporate','Corporate'],meetup:['badge-meetup','Meetup']};
+  var d=m[t]||['badge-tech','Event'];
+  return '<span class="ev-badge '+d[0]+'">'+d[1]+'</span>';
+}
+
+function renderCal(evs){
+  var el=document.getElementById('calView');
+  if(!evs.length){el.innerHTML='<div class="empty"><div class="ico">❄</div><p>No events for this filter</p></div>';return;}
+  var bm={};
+  evs.forEach(function(ev){
+    var d=new Date(ev.date); var mk=d.getFullYear()+'-'+d.getMonth();
+    if(!bm[mk])bm[mk]={y:d.getFullYear(),m:d.getMonth(),days:{}};
+    var dk=ev.date.slice(0,10);
+    if(!bm[mk].days[dk])bm[mk].days[dk]=[];
+    bm[mk].days[dk].push(ev);
+  });
+  var html='';
+  Object.values(bm).forEach(function(mo){
+    html+='<div class="month-label">'+MONTHS[mo.m]+' '+mo.y+'</div>';
+    Object.entries(mo.days).sort(function(a,b){return a[0].localeCompare(b[0]);}).forEach(function(entry){
+      var dk=entry[0]; var ea=entry[1];
+      var d=new Date(dk);
+      var cards=ea.map(function(ev){
+        return '<div class="ev-card '+ev.type+'" onclick="openLink(\''+ev.url+'\')">'+
+          '<div class="ev-top"><div class="ev-title">'+ev.title+'</div>'+badge(ev.type)+'</div>'+
+          '<div class="ev-meta"><span>📍 '+ev.location+'</span>'+(ev.time?'<span>🕐 '+ev.time+'</span>':'')+(ev.organizer?'<span>🏢 '+ev.organizer+'</span>':'')+'</div>'+
+          '<div class="ev-src">via '+ev.source+'</div></div>';
+      }).join('');
+      html+='<div class="cal-row">'+
+        '<div class="cal-date"><div class="num">'+String(d.getDate()).padStart(2,'0')+'</div><div class="dn">'+DAYS[d.getDay()]+'</div></div>'+
+        '<div class="cal-events">'+cards+'</div></div>';
+    });
+  });
+  el.innerHTML=html;
+}
+
+function renderList(evs){
+  var el=document.getElementById('lstView');
+  if(!evs.length){el.innerHTML='<div class="empty"><div class="ico">❄</div><p>No events for this filter</p></div>';return;}
+  var sorted=evs.slice().sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+  el.innerHTML=sorted.map(function(ev){
+    var d=new Date(ev.date);
+    var ds=String(d.getDate()).padStart(2,'0')+' '+MONTHS[d.getMonth()]+' '+d.getFullYear()+(ev.time?' · '+ev.time:'');
+    return '<div class="list-card '+ev.type+'" onclick="openLink(\''+ev.url+'\')">'+
+      '<div class="lc-date">'+ds+'</div>'+
+      '<div class="lc-title">'+ev.title+' '+badge(ev.type)+'</div>'+
+      (ev.description?'<div class="lc-desc">'+ev.description+'</div>':'')+
+      '<div class="lc-footer"><span class="lc-meta">📍 '+ev.location+(ev.organizer?' · 🏢 '+ev.organizer:'')+'</span>'+
+      (ev.url&&ev.url!=='#'?'<a class="lc-link" href="'+ev.url+'" target="_blank" onclick="event.stopPropagation()">Details →</a>':'')+
+      '</div><div class="lc-src">Source: '+ev.source+'</div></div>';
+  }).join('');
+}
+
+function render(){var f=filtered();if(currentView==='calendar')renderCal(f);else renderList(f);}
+function updateStats(evs){
+  document.getElementById('statsRow').classList.add('show');
+  document.getElementById('sAll').textContent=evs.length;
+  document.getElementById('sTech').textContent=evs.filter(function(e){return e.type==='tech';}).length;
+  document.getElementById('sCareer').textContent=evs.filter(function(e){return e.type==='career';}).length;
+  document.getElementById('sCorp').textContent=evs.filter(function(e){return e.type==='corporate';}).length;
+}
+function openLink(url){if(url&&url!=='#')window.open(url,'_blank');}
+
+async function loadEvents(force){
+  if(force===undefined)force=false;
+  var btn=document.getElementById('refreshBtn');
+  btn.disabled=true; hideErr();
+  if(!force){
+    var c=loadCache();
+    if(c){
+      allEvents=c.events;
+      document.getElementById('lastUpd').textContent=new Date(c.ts).toLocaleDateString('en-CH');
+      setStatus('done',allEvents.length+' events from cache');
+      updateStats(allEvents); render(); btn.disabled=false; return;
+    }
+  }
+  setStatus('loading','Searching for events…');
+  showAI('AI is searching Meetup, Eventbrite, LinkedIn and company websites…');
+  showSkels();
+  var today=new Date();
+  var ts=today.toISOString().split('T')[0];
+  var end=new Date(today); end.setMonth(end.getMonth()+3);
+  var es=end.toISOString().split('T')[0];
+  var prompt='You are a Switzerland event researcher. Today is '+ts+'.\n\nFind REAL upcoming events in Switzerland between '+ts+' and '+es+'.\nSources: Meetup.com, Eventbrite, LinkedIn Events, company websites.\nFocus on:\n1. IT/Tech meetups and conferences in Zurich, Basel, Bern, Geneva\n2. Career fairs: ETH Zurich, EPFL, universities\n3. Corporate events: Swisscom, UBS, SBB, Google, Microsoft, SAP, Nestlé, Novartis, Roche, ABB\n4. ServiceNow, Salesforce, SAP HRSD user groups\n\nReturn ONLY valid JSON array (no markdown). Each object:\n{"title":"string","date":"YYYY-MM-DD","time":"HH:MM or null","location":"City, Venue","type":"tech|career|corporate|meetup","organizer":"string or null","description":"1-2 sentences","url":"real URL or #","source":"source name"}\nMinimum 15 events after '+ts+'.';
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,tools:[{type:'web_search_20250305',name:'web_search'}],messages:[{role:'user',content:prompt}]})});
+    if(!res.ok)throw new Error('API '+res.status);
+    var data=await res.json();
+    var raw='';
+    data.content.forEach(function(b){if(b.type==='text')raw+=b.text;});
+    var m=raw.match(/\[[\s\S]*\]/);
+    if(!m)throw new Error('Parse failed');
+    var events=JSON.parse(m[0]);
+    if(!Array.isArray(events)||!events.length)throw new Error('Empty');
+    events.sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+    allEvents=events; saveCache(events);
+    document.getElementById('lastUpd').textContent=new Date().toLocaleDateString('en-CH');
+    hideAI(); setStatus('done',events.length+' events found'); updateStats(events); render();
+  }catch(err){
+    hideAI(); setStatus('error','Load failed — showing demo data');
+    showErr('Could not load live data: '+err.message+'. Showing curated demo events.');
+    loadDemo();
+  }
+  btn.disabled=false;
+}
+
+function loadDemo(){
+  var n=new Date();
+  function add(d){var r=new Date(n);r.setDate(r.getDate()+d);return r.toISOString().split('T')[0];}
+  allEvents=[
+    {title:"Zurich AI & Machine Learning Meetup",date:add(4),time:"18:30",location:"Zurich, Impact Hub",type:"meetup",organizer:"Zurich ML Community",description:"Monthly gathering for AI practitioners. Lightning talks on LLM fine-tuning and RAG architectures in production.",url:"https://www.meetup.com/zurich-machine-learning/",source:"Meetup.com"},
+    {title:"ServiceNow World Forum EMEA",date:add(11),time:"09:00",location:"Geneva, Palexpo",type:"tech",organizer:"ServiceNow",description:"Enterprise platform showcase with HRSD, ITSM, and AI-powered workflow sessions for European customers.",url:"https://events.servicenow.com",source:"servicenow.com"},
+    {title:"Google Zurich Tech Talks — GenAI",date:add(7),time:"17:00",location:"Zurich, Google Campus",type:"corporate",organizer:"Google",description:"Gemini integration patterns and Vertex AI deep-dives for enterprise developers. Live demos with Google engineers.",url:"https://events.google.com",source:"Google Events"},
+    {title:"ETH Zurich Career Fair 2025",date:add(19),time:"10:00",location:"Zurich, ETH Main Building",type:"career",organizer:"ETH Zurich",description:"Switzerland's largest tech career fair. 150+ employers including Swisscom, ABB, UBS, Google, Nestlé, and Roche.",url:"https://careerservices.ethz.ch",source:"ETH Zurich"},
+    {title:"Swisscom Developer Days",date:add(23),time:"09:00",location:"Bern, Swisscom HQ",type:"corporate",organizer:"Swisscom",description:"Annual developer conference covering 5G, IoT, cloud infrastructure and open innovation initiatives.",url:"https://www.swisscom.ch/events",source:"Swisscom"},
+    {title:"Swiss HR Tech Summit",date:add(26),time:"08:30",location:"Basel, Congress Center",type:"career",organizer:"HR Swiss",description:"Future of HR technology: AI hiring tools, HRIS platform trends, and digital employee experience design.",url:"https://hrtechsummit.ch",source:"LinkedIn Events"},
+    {title:"UBS Digital Innovation Forum",date:add(31),time:"14:00",location:"Zurich, UBS Tower",type:"corporate",organizer:"UBS",description:"Fintech and blockchain innovation forum exploring next-generation financial technology.",url:"https://www.ubs.com/events",source:"UBS"},
+    {title:"Basel Python Meetup",date:add(13),time:"19:00",location:"Basel, Westhive Coworking",type:"meetup",organizer:"Python Basel",description:"Monthly Python gathering. FastAPI async patterns and SQLModel in production systems.",url:"https://www.meetup.com/python-basel/",source:"Meetup.com"},
+    {title:"SBB Digital Hackathon 2025",date:add(36),time:"09:00",location:"Bern, SBB Campus",type:"corporate",organizer:"SBB CFF FFS",description:"48-hour hackathon building next-gen mobility solutions for Swiss public transport.",url:"https://digital.sbb.ch",source:"SBB"},
+    {title:"EPFL Innovation Park Open Day",date:add(41),time:"10:00",location:"Lausanne, EPFL Campus",type:"tech",organizer:"EPFL",description:"Deep-tech startup showcases, investor pitches and cross-industry networking.",url:"https://innovation-park.epfl.ch",source:"EPFL"},
+    {title:"Zurich HR Networking Evening",date:add(9),time:"18:00",location:"Zurich, Clouds Restaurant",type:"career",organizer:"HR City Zurich",description:"Informal networking for HR professionals. Focus on digital transformation and ServiceNow in HR.",url:"#",source:"LinkedIn"},
+    {title:"SAP User Group Switzerland",date:add(46),time:"09:30",location:"Zurich, Marriott Hotel",type:"corporate",organizer:"SAP Switzerland",description:"SAP S/4HANA, SuccessFactors and BTP platform updates with hands-on workshops.",url:"https://www.sapusers.ch",source:"SAP"},
+    {title:"Geneva Startup Weekend — Tech",date:add(21),time:"18:00",location:"Geneva, coHub",type:"tech",organizer:"Techstars",description:"54-hour startup competition. Build, validate, and pitch a tech startup from concept to prototype.",url:"https://startupweekend.org",source:"Eventbrite"},
+    {title:"Microsoft Azure Community Day",date:add(29),time:"09:00",location:"Zurich, Microsoft Office",type:"tech",organizer:"Microsoft",description:"Community-driven Azure conference covering Copilot Studio, Power Platform and DevOps practices.",url:"https://www.microsoft.com/en-ch/events",source:"Microsoft"},
+    {title:"Novartis Digital Health Symposium",date:add(51),time:"08:30",location:"Basel, Novartis Campus",type:"corporate",organizer:"Novartis",description:"AI in drug discovery, digital health platform strategy and healthcare data science innovation.",url:"https://www.novartis.com/events",source:"Novartis"},
+    {title:"ZurichJS — JavaScript Community Night",date:add(6),time:"19:00",location:"Zurich, Kraftwerk",type:"meetup",organizer:"ZurichJS",description:"Monthly JavaScript community evening. React Server Components deep-dive and edge computing.",url:"https://www.meetup.com/zurichjs/",source:"Meetup.com"},
+    {title:"KPMG Digital Innovation Day Switzerland",date:add(33),time:"09:00",location:"Zurich, KPMG Offices",type:"corporate",organizer:"KPMG Switzerland",description:"Emerging technology briefing: AI readiness, blockchain enterprise use cases, cybersecurity.",url:"https://home.kpmg/ch",source:"KPMG"}
+  ];
+  document.getElementById('lastUpd').textContent=new Date().toLocaleDateString('en-CH')+' (demo)';
+  setStatus('done',allEvents.length+' demo events');
+  updateStats(allEvents); render();
+}
+
+window.addEventListener('DOMContentLoaded',function(){loadEvents(false);});
+</script>
+</body>
+</html>
