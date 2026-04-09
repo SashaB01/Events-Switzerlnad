@@ -1141,7 +1141,7 @@ async function loadEvents(force){
   var es=end.toISOString().split('T')[0];
   var prompt='You are a Switzerland event researcher. Today is '+ts+'.\n\nFind REAL upcoming events in Switzerland between '+ts+' and '+es+'.\nSources: Meetup.com, Eventbrite, LinkedIn Events, company websites.\nFocus on:\n1. IT/Tech meetups and conferences in Zurich, Basel, Bern, Geneva\n2. Career fairs: ETH Zurich, EPFL, universities\n3. Corporate events: Swisscom, UBS, SBB, Google, Microsoft, SAP, Nestlé, Novartis, Roche, ABB\n4. ServiceNow, Salesforce, SAP HRSD user groups\n\nReturn ONLY valid JSON array (no markdown). Each object:\n{"title":"string","date":"YYYY-MM-DD","time":"HH:MM or null","location":"City, Venue","type":"tech|career|corporate|meetup","organizer":"string or null","description":"1-2 sentences","url":"real URL or #","source":"source name"}\nMinimum 15 events after '+ts+'.';
   try{
-    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,tools:[{type:'web_search_20250305',name:'web_search'}],messages:[{role:'user',content:prompt}]})});
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','dangerously-allow-browser': 'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,tools:[{type:'web_search_20250305',name:'web_search'}],messages:[{role:'user',content:prompt}]})});
     if(!res.ok)throw new Error('API '+res.status);
     var data=await res.json();
     var raw='';
